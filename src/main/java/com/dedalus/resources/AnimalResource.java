@@ -1,6 +1,7 @@
 package com.dedalus.resources;
 
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.GET;
@@ -13,6 +14,7 @@ import com.dedalus.model.AnimalEntity;
 import com.dedalus.persistence.AnimalRepository;
 
 @Path("animal")
+@RequestScoped
 public class AnimalResource {
     @Inject
     AnimalRepository repository;

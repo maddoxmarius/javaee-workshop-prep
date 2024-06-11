@@ -2,7 +2,7 @@ POST http://localhost:8080/animal
 Content-Type: application/json
 
 {
-    "name": "John Doe",
+    "name": "Wuff",
     "type": "DOG",
     "comment": "This is a comment",
     "isAvailable": true
