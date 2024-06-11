@@ -4,27 +4,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
-public class GreetingEntity {
+@Getter
+@Setter
+public class AnimalEntity {
     @Id
     @GeneratedValue
     public Long id;
 
-    private String phrase;
-
-    public String getPhrase() {
-        return phrase;
-    }
-
-    public void setPhrase(String field) {
-        this.phrase = field;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private String name;
+    private AnimalType type;
+    private String comment;
+    private Boolean isAvailable;
 }

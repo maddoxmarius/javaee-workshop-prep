@@ -1,6 +1,6 @@
 package com.dedalus.persistence;
 
-import com.dedalus.model.GreetingEntity;
+import com.dedalus.model.AnimalEntity;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -11,7 +11,7 @@ public class GreetingRepository {
     @Inject
     EntityManager em;
 
-    public GreetingEntity save(GreetingEntity entity) {
+    public AnimalEntity save(AnimalEntity entity) {
         em.persist(entity);
         return entity;
     }
