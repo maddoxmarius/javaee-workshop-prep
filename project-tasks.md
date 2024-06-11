@@ -1,5 +1,5 @@
 # Animal Shelter - JavaEE Workshop Project
-You have been tasked with developing an application for an animal shelter.
+You have been tasked with developing an application for an animal shelter. Test
 The frontend will be written by a small Austrian indie-company called AFGA, so you just need to provide a backend for it.
 
 # Step 1 - Entities
