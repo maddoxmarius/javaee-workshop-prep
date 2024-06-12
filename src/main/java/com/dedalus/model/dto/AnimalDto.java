@@ -9,10 +9,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class AnimalDto {
+
     private String name;
     private AnimalType animalType;
     String comment;
     Boolean isAvailable;
+
     public AnimalDto(String name, AnimalType animalType)
     {
         this.name = name;

@@ -20,7 +20,12 @@ import com.dedalus.model.AnimalEntity;
 public interface AnimalMapper {
 
     @Mapping(target = "animalType", source = "type")
-    AnimalDto toDto(AnimalEntity entity);
+    AnimalDto toDetails(AnimalEntity entity);
+
+    @Mapping(target = "animalType", source = "type")
+    @Mapping(target = "comment", ignore = true)
+    @Mapping(target = "isAvailable", ignore = true)
+    AnimalDto toSummary(AnimalEntity entity);
 
     @Mapping(target = "type", source = "animalType")
     AnimalEntity toEntity(AnimalDto dto);

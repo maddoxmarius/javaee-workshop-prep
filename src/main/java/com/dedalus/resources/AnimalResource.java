@@ -30,7 +30,7 @@ public class AnimalResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<AnimalDto> list() {
         AnimalMapper mapper = Mappers.getMapper(AnimalMapper.class);
-        return animalService.list().stream().map(a -> mapper.toDto(a))
+        return animalService.list().stream().map(a -> mapper.toSummary(a))
                 .collect(Collectors.toList());
     }
 
@@ -39,7 +39,8 @@ public class AnimalResource {
 //    @RolesAllowed({ Roles.INTERESTED_USER })
     @Path("/details")
     public List<AnimalDto> detailedList() {
-        return animalService.list().stream().map(a -> new AnimalDto(a.getName(), a.getType(), a.getComment(), a.getIsAvailable()))
+        AnimalMapper mapper = Mappers.getMapper(AnimalMapper.class);
+        return animalService.list().stream().map(a -> mapper.toDetails(a))
                 .collect(Collectors.toList());
     }
 
