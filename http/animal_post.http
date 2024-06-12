@@ -7,5 +7,8 @@ Content-Type: application/json
     "comment": "This is a comment",
     "isAvailable": true
 }
-### get request
+### get request for normal use
 GET http://localhost:8080/animal
+
+### GET request for for animal detailed view
+GET http://localhost:8080/animal/details
