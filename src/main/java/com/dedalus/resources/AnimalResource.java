@@ -12,8 +12,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.mapstruct.factory.Mappers;
 import com.dedalus.model.AnimalEntity;
 import com.dedalus.model.dto.AnimalDto;
+import com.dedalus.model.dto.AnimalMapper;
 import com.dedalus.persistence.AnimalRepository;
 import com.dedalus.security.Roles;
 import com.dedalus.service.AnimalService;
@@ -27,7 +29,8 @@ public class AnimalResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<AnimalDto> list() {
-        return animalService.list().stream().map(a -> new AnimalDto(a.getName(), a.getType()))
+        AnimalMapper mapper = Mappers.getMapper(AnimalMapper.class);
+        return animalService.list().stream().map(a -> mapper.toDto(a))
                 .collect(Collectors.toList());
     }
 
