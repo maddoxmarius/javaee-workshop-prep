@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -26,6 +27,7 @@ public class AnimalResource {
 
      @Inject
     AnimalService animalService;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<AnimalDto> list() {
@@ -34,14 +36,13 @@ public class AnimalResource {
                 .collect(Collectors.toList());
     }
 
-    @GET
+
     @Produces(MediaType.APPLICATION_JSON)
-//    @RolesAllowed({ Roles.INTERESTED_USER })
-    @Path("/details")
-    public List<AnimalDto> detailedList() {
+    @Path("{id}")
+    @GET
+    public AnimalDto listAnimalDetails(@PathParam("id") Long id) {
         AnimalMapper mapper = Mappers.getMapper(AnimalMapper.class);
-        return animalService.list().stream().map(a -> mapper.toDetails(a))
-                .collect(Collectors.toList());
+        return mapper.toDetails(animalService.findById(id));
     }
 
     @POST

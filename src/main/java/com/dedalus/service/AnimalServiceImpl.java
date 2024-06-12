@@ -24,4 +24,9 @@ public class AnimalServiceImpl implements AnimalService {
          repository.save(entity);
          return entity;
     }
+
+    @Override
+    public AnimalEntity findById(Long id) {
+        return repository.find(id);
+    }
 }
