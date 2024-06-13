@@ -65,7 +65,7 @@ public class AnimalResource {
         if (!animal.getIsAvailable()) {
             throw new AnimalNotAvailableException(animal);
         }
-        if (animal == null) {
+        if (Objects.isNull(animal)) {
             throw new NotFoundException("animal with id " + animalId + " not found");
         }
         UserEntity user = userService.findById(dto.getAdoptedBy());
@@ -82,7 +82,7 @@ public class AnimalResource {
     @GET
     public AnimalEntity listAnimalDetails(@PathParam("id") Long id) {
         final AnimalEntity animal = animalService.findById(id);
-        if (animal == null) {
+        if (Objects.isNull(animal)) {
             throw new NotFoundException("animal with id " + id + " not found");
         }
         ArrayList<HashMap> details = animalApiNinjaService.getByName(animal.getType().name(), apiKey);
