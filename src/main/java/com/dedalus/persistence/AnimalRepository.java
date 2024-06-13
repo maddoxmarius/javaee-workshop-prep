@@ -1,14 +1,11 @@
 package com.dedalus.persistence;
 
-import java.util.List;
-import java.util.UUID;
-
 import com.dedalus.model.AnimalEntity;
-import com.dedalus.model.dto.AnimalDto;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @ApplicationScoped
 public class AnimalRepository {
@@ -26,7 +23,6 @@ public class AnimalRepository {
     }
 
     public AnimalEntity find(Long id) {
-
         return em.find(AnimalEntity.class, id);
     }
 }

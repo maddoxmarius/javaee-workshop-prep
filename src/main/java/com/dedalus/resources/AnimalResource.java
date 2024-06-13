@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.PATCH;
@@ -36,7 +37,7 @@ public class AnimalResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<AnimalDto> list() {
         AnimalMapper mapper = Mappers.getMapper(AnimalMapper.class);
-        return animalService.list().stream().map(a -> mapper.toSummary(a))
+        return animalService.list().stream().map(mapper::toSummary)
                 .collect(Collectors.toList());
     }
 
@@ -65,15 +66,14 @@ public class AnimalResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
     @GET
-    public AnimalDto listAnimalDetails(@PathParam("id") Long id) {
-        AnimalMapper mapper = Mappers.getMapper(AnimalMapper.class);
-        return mapper.toDetails(animalService.findById(id));
+    public AnimalEntity listAnimalDetails(@PathParam("id") Long id) {
+        return animalService.findById(id);
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public AnimalEntity save(AnimalEntity entity) {
+    public AnimalEntity save(@Valid AnimalEntity entity) {
         return animalService.save(entity);
     }
 }
