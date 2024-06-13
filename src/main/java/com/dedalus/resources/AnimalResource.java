@@ -22,6 +22,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -55,7 +56,7 @@ public class AnimalResource {
     @Path("{id}")
     @Transactional
     public void adoptAnimals(@PathParam("id") Long animalId, AdoptAnimalDto dto) throws AnimalNotAvailableException {
-        if (dto == null || dto.getAdoptedBy() == null) {
+        if (Objects.isNull(dto) || Objects.isNull(dto.getAdoptedBy())) {
             return; //nothing to do
         }
 
