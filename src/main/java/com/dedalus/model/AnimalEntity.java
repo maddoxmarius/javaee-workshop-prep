@@ -6,6 +6,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +21,8 @@ public class AnimalEntity {
     @GeneratedValue
     public Long id;
 
+    @NotEmpty
+    @Min(3)
     private String name;
     private AnimalType type;
     private String comment;
