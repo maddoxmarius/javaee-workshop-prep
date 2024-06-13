@@ -21,7 +21,7 @@ public class AnimalResourceTest {
         animal.setName("Lion");
         animal.setType(AnimalType.CAT);
         animal.setComment("King of the Jungle");
-        animal.setIsAvailable(true);
+        animal.setAvailable(true);
         when(animalServiceMock.list()).thenReturn(List.of(animal));
         given()
                 .when().get("/hello")

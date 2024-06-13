@@ -9,7 +9,6 @@ import com.dedalus.model.dto.AnimalMapper;
 import com.dedalus.service.AnimalApiNinjaService;
 import com.dedalus.service.AnimalService;
 import com.dedalus.service.UserService;
-import org.apache.http.client.utils.URIBuilder;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.mapstruct.factory.Mappers;
@@ -21,6 +20,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -107,8 +107,8 @@ public class AnimalResource {
         if (animal == null) {
             throw new NotFoundException("animal with id " + id + " not found");
         }
-        URI uri = new URIBuilder("https://en.wikipedia.org/w/index.php")
-                .setParameter("search", animal.getType().name())
+        URI uri = UriBuilder.fromUri("https://en.wikipedia.org/w/index.php")
+                .queryParam("search", animal.getType().name())
                 .build();
         return Response.seeOther(uri).build();
     }
