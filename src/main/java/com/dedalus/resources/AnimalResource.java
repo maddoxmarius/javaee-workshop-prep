@@ -43,6 +43,7 @@ public class AnimalResource {
     @PATCH
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
+    @Transactional
     public void adoptAnimals(@PathParam("id") Long animalId, AdoptAnimalDto dto) {
         if (dto == null || dto.getAdoptedBy() == null) {
             return; //nothing to do
