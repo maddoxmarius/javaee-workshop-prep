@@ -12,6 +12,9 @@
  */
 package com.dedalus.model;
 
+import lombok.Getter;
+
+@Getter
 public enum AnimalType {
     CAT("cat"),
     DOG("dog"),
