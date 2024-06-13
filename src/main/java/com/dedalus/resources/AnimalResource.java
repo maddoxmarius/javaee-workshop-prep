@@ -1,27 +1,29 @@
 package com.dedalus.resources;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.PATCH;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import org.mapstruct.factory.Mappers;
+import com.dedalus.exception.AnimalNotAvailableException;
 import com.dedalus.model.AnimalEntity;
 import com.dedalus.model.UserEntity;
 import com.dedalus.model.dto.AdoptAnimalDto;
 import com.dedalus.model.dto.AnimalDto;
 import com.dedalus.model.dto.AnimalMapper;
+import com.dedalus.service.AnimalApiNinjaService;
 import com.dedalus.service.AnimalService;
 import com.dedalus.service.UserService;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.mapstruct.factory.Mappers;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Path("animal")
 @RequestScoped
@@ -32,6 +34,13 @@ public class AnimalResource {
 
     @Inject
     UserService userService;
+
+    @Inject
+    @RestClient
+    AnimalApiNinjaService animalApiNinjaService;
+
+    @ConfigProperty(name = "api.key")
+    String apiKey;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -45,17 +54,21 @@ public class AnimalResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
     @Transactional
-    public void adoptAnimals(@PathParam("id") Long animalId, AdoptAnimalDto dto) {
+    public void adoptAnimals(@PathParam("id") Long animalId, AdoptAnimalDto dto) throws AnimalNotAvailableException {
         if (dto == null || dto.getAdoptedBy() == null) {
             return; //nothing to do
         }
 
+        // TODO add to a custom Validation bean
         AnimalEntity animal = animalService.findById(animalId);
+        if (!animal.getIsAvailable()) {
+            throw new AnimalNotAvailableException(animal);
+        }
         if (animal == null) {
             throw new NotFoundException("animal with id " + animalId + " not found");
         }
         UserEntity user = userService.findById(dto.getAdoptedBy());
-        if(user == null) {
+        if (user == null) {
             throw new NotFoundException("user with id " + dto.getAdoptedBy() + " not found");
         }
         animal.setAdoptedBy(user);
@@ -67,7 +80,17 @@ public class AnimalResource {
     @Path("{id}")
     @GET
     public AnimalEntity listAnimalDetails(@PathParam("id") Long id) {
-        return animalService.findById(id);
+        final AnimalEntity animal = animalService.findById(id);
+        if (animal == null) {
+            throw new NotFoundException("animal with id " + id + " not found");
+        }
+        ArrayList<HashMap> details = animalApiNinjaService.getByName(animal.getType().name(), apiKey);
+        Optional.ofNullable(details).ifPresent(d -> {
+            if (!d.isEmpty()) {
+                animal.setTypeDetails(details.get(0).get("characteristics"));
+            }
+        });
+        return animal;
     }
 
     @POST
@@ -76,4 +99,5 @@ public class AnimalResource {
     public AnimalEntity save(@Valid AnimalEntity entity) {
         return animalService.save(entity);
     }
+
 }

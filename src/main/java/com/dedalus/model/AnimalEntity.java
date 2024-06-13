@@ -34,4 +34,7 @@ public class AnimalEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity adoptedBy;
+
+    @Transient
+    private Object typeDetails;
 }

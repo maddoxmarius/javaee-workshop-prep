@@ -11,7 +11,7 @@ Content-Type: application/json
 GET http://localhost:8080/animal
 
 ### GET request for for animal detailed view
-GET http://localhost:8080/animal/999
+GET http://localhost:8080/animal/4
 
 ### PATCH adopting a animal
 PATCH http://localhost:8080/animal/4
