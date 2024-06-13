@@ -11,7 +11,7 @@ Content-Type: application/json
 GET http://localhost:8080/animal
 
 ### GET request for for animal detailed view
-GET http://localhost:8080/animal/4
+GET http://localhost:8080/animal/999
 
 ### PATCH adopting a animal
 PATCH http://localhost:8080/animal/4
@@ -26,7 +26,7 @@ POST http://localhost:8080/animal
 Content-Type: application/json
 
 {
-"name": "Rex",
+"name": "R",
 "type": "DOG",
 "comment": "This is a comment",
 "isAvailable": true,
