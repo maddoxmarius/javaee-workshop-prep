@@ -20,3 +20,18 @@ Content-Type: application/json
 {
   "adoptedBy": 1
 }
+
+### Adopted_by POST request
+POST http://localhost:8080/animal
+Content-Type: application/json
+
+{
+"name": "Rex",
+"type": "DOG",
+"comment": "This is a comment",
+"isAvailable": true,
+  "adoptedBy": {
+    "name" : "Marius",
+    "id" : 1
+  }
+}
