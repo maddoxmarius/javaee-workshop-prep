@@ -9,5 +9,5 @@ public interface UserService {
 
     UserEntity save(UserEntity animalEntity);
 
-    UserEntity findById(Long id);
+    UserEntity findUserById(Long id);
 }

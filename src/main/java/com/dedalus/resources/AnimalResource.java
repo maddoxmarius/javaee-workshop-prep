@@ -9,6 +9,7 @@ import com.dedalus.model.dto.AnimalMapper;
 import com.dedalus.service.AnimalApiNinjaService;
 import com.dedalus.service.AnimalService;
 import com.dedalus.service.UserService;
+import org.apache.http.client.utils.URIBuilder;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.mapstruct.factory.Mappers;
@@ -19,6 +20,9 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,8 +51,7 @@ public class AnimalResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<AnimalDto> list() {
         AnimalMapper mapper = Mappers.getMapper(AnimalMapper.class);
-        return animalService.list().stream().map(mapper::toSummary)
-                .collect(Collectors.toList());
+        return animalService.list().stream().map(mapper::toSummary).collect(Collectors.toList());
     }
 
     @PATCH
@@ -56,19 +59,21 @@ public class AnimalResource {
     @Path("{id}")
     @Transactional
     public void adoptAnimals(@PathParam("id") Long animalId, AdoptAnimalDto dto) throws AnimalNotAvailableException {
+        //TODO how to go from adopted to not being adopted?
         if (Objects.isNull(dto) || Objects.isNull(dto.getAdoptedBy())) {
             return; //nothing to do
         }
 
         // TODO add to a custom Validation bean
         AnimalEntity animal = animalService.findById(animalId);
-        if (!animal.getIsAvailable()) {
-            throw new AnimalNotAvailableException(animal);
-        }
         if (Objects.isNull(animal)) {
             throw new NotFoundException("animal with id " + animalId + " not found");
         }
-        UserEntity user = userService.findById(dto.getAdoptedBy());
+        if (!animal.isAvailable()) {
+            throw new AnimalNotAvailableException(animal);
+        }
+
+        UserEntity user = userService.findUserById(dto.getAdoptedBy());
         if (user == null) {
             throw new NotFoundException("user with id " + dto.getAdoptedBy() + " not found");
         }
@@ -93,6 +98,21 @@ public class AnimalResource {
         });
         return animal;
     }
+
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{id}/info")
+    @GET
+    public Response info(@PathParam("id") Long id) throws URISyntaxException {
+        final AnimalEntity animal = animalService.findById(id);
+        if (animal == null) {
+            throw new NotFoundException("animal with id " + id + " not found");
+        }
+        URI uri = new URIBuilder("https://en.wikipedia.org/w/index.php")
+                .setParameter("search", animal.getType().name())
+                .build();
+        return Response.seeOther(uri).build();
+    }
+
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)

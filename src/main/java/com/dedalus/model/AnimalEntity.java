@@ -29,7 +29,7 @@ public class AnimalEntity {
     private AnimalType type;
 
     private String comment;
-    private Boolean isAvailable;
+    private boolean isAvailable;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

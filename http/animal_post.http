@@ -13,6 +13,9 @@ GET http://localhost:8080/animal
 ### GET request for for animal detailed view
 GET http://localhost:8080/animal/4
 
+### Redirect to wiki
+GET http://localhost:8080/animal/4/info
+
 ### PATCH adopting a animal
 PATCH http://localhost:8080/animal/4
 Content-Type: application/json
