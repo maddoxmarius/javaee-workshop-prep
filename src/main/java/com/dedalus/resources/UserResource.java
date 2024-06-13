@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 @Path("user")
 @RequestScoped
@@ -21,6 +22,12 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public UserEntity findById(@NotNull @PathParam("id") Long id) {
         return repository.findById(id);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UserEntity> all() {
+        return repository.list();
     }
 
     @POST

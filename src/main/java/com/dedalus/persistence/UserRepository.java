@@ -18,7 +18,7 @@ public class UserRepository {
     }
 
     public List<UserEntity> list() {
-        return em.createQuery("SELECT a FROM user a", UserEntity.class)
+        return em.createQuery("SELECT a FROM real_user a", UserEntity.class)
                 .getResultList();
     }
 

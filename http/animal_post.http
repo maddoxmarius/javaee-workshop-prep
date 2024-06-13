@@ -12,3 +12,11 @@ GET http://localhost:8080/animal
 
 ### GET request for for animal detailed view
 GET http://localhost:8080/animal/1
+
+### PATCH adopting a animal
+PATCH http://localhost:8080/animal/1
+Content-Type: application/json
+
+{
+  "adoptedBy": 1
+}
