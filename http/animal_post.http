@@ -1,3 +1,4 @@
+### adds an animal
 POST http://localhost:8080/animal
 Content-Type: application/json
 
@@ -7,13 +8,13 @@ Content-Type: application/json
     "comment": "This is a comment",
     "isAvailable": true
 }
-### get request for normal use
+### list all animals
 GET http://localhost:8080/animal
 
-### GET request for for animal detailed view
+### lists detailed view for a specific animal.
 GET http://localhost:8080/animal/4
 
-### Redirect to wiki
+### Redirects to wiki page for a specific animal type
 GET http://localhost:8080/animal/4/info
 
 ### PATCH adopting a animal
